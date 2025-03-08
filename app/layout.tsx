@@ -1,13 +1,13 @@
-import './globals.css';
+import { ThemeProvider } from '@/components/theme-provider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { ThemeProvider } from "@/components/theme-provider";
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Certificate Management System',
-  description: 'Computer Training Center Certificate Management System',
+  title: 'deliBhai IT Institute',
+  description: 'Computer Training Center Course Management System',
 };
 
 export default function RootLayout({

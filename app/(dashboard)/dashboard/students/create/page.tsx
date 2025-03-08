@@ -1,9 +1,6 @@
-"use client"
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -11,37 +8,40 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation"
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: 'Name must be at least 2 characters.',
   }),
   startDate: z.string(),
   completionDate: z.string(),
-})
+});
 
 export default function AddStudentPage() {
-  const router = useRouter()
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      startDate: "",
-      completionDate: "",
+      name: '',
+      startDate: '',
+      completionDate: '',
     },
-  })
+  });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    router.push("/dashboard/students")
+    console.log(values);
+    router.push('/dashboard/students');
   }
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold">Add Student</h1>
+      <h1 className="text-3xl font-bold">Create Student Profile</h1>
       <div className="mt-8 max-w-[600px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -89,5 +89,5 @@ export default function AddStudentPage() {
         </Form>
       </div>
     </div>
-  )
+  );
 }

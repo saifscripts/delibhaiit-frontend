@@ -1,7 +1,6 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -9,40 +8,41 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { PlusCircle } from "lucide-react"
-import Link from "next/link"
+} from '@/components/ui/table';
+import { PlusCircle } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 const initialStudents = [
   {
-    id: "1",
-    name: "John Doe",
-    startDate: "2024-01-01",
-    completionDate: "2024-03-01",
+    id: '1',
+    name: 'John Doe',
+    startDate: '2024-01-01',
+    completionDate: '2024-03-01',
   },
   {
-    id: "2",
-    name: "Jane Smith",
-    startDate: "2024-02-01",
-    completionDate: "2024-04-01",
+    id: '2',
+    name: 'Jane Smith',
+    startDate: '2024-02-01',
+    completionDate: '2024-04-01',
   },
-]
+];
 
 export default function StudentsPage() {
-  const [students] = useState(initialStudents)
+  const [students] = useState(initialStudents);
 
   return (
     <div className="p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Students</h1>
-        <Link href="/dashboard/students/add">
+        <Link href="/dashboard/students/create">
           <Button>
             <PlusCircle className="h-5 w-5 mr-2" />
-            Add Student
+            New Student
           </Button>
         </Link>
       </div>
-      
+
       <div className="mt-8">
         <Table>
           <TableHeader>
@@ -64,5 +64,5 @@ export default function StudentsPage() {
         </Table>
       </div>
     </div>
-  )
+  );
 }
