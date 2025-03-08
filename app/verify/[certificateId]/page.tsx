@@ -1,9 +1,27 @@
-export function generateStaticParams() {
-  // Generate static pages for example IDs
-  return [{ id: 'example-id' }, { id: '12345' }];
+import { getStudent } from '@/services/student.service';
+import { Student } from '@/types';
+import { format } from 'date-fns';
+
+export async function generateStaticParams() {
+  const res = await fetch(`${process.env.BASE_URL}/api/v1/students`, {
+    next: { tags: ['students'] },
+  });
+  const { data: students } = await res.json();
+
+  console.log({ students });
+
+  return students.map((student: Student) => ({
+    certificateId: student.certificateId,
+  }));
 }
 
-export default function VerifyPage() {
+export default async function VerifyPage({
+  params,
+}: {
+  params: { certificateId: string };
+}) {
+  const { data: student } = await getStudent(params.certificateId);
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-3xl mx-auto bg-card rounded-lg shadow-lg p-8">
@@ -11,7 +29,9 @@ export default function VerifyPage() {
           <h1 className="text-3xl font-bold text-primary">
             Certificate Verification
           </h1>
-          <p className="text-muted-foreground mt-2">Certificate ID: #12345</p>
+          <p className="text-muted-foreground mt-2">
+            Certificate ID: #{student.certificateId}
+          </p>
         </div>
 
         <div className="space-y-6">
@@ -20,7 +40,7 @@ export default function VerifyPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-muted-foreground">Name</p>
-                <p className="font-medium">John Doe</p>
+                <p className="font-medium">{student.name}</p>
               </div>
               <div>
                 <p className="text-muted-foreground">Course</p>
@@ -28,11 +48,15 @@ export default function VerifyPage() {
               </div>
               <div>
                 <p className="text-muted-foreground">Start Date</p>
-                <p className="font-medium">January 1, 2024</p>
+                <p className="font-medium">
+                  {format(student.startDate, 'PPP')}
+                </p>
               </div>
               <div>
                 <p className="text-muted-foreground">Completion Date</p>
-                <p className="font-medium">March 1, 2024</p>
+                <p className="font-medium">
+                  {format(student.completionDate, 'PPP')}
+                </p>
               </div>
             </div>
           </div>
