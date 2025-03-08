@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -9,27 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { PlusCircle } from 'lucide-react';
+import { useGetAllStudents } from '@/hooks/student.hook';
+import { format } from 'date-fns';
+import { CopyIcon, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
-
-const initialStudents = [
-  {
-    id: '1',
-    name: 'John Doe',
-    startDate: '2024-01-01',
-    completionDate: '2024-03-01',
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    startDate: '2024-02-01',
-    completionDate: '2024-04-01',
-  },
-];
+import toast from 'react-hot-toast';
 
 export default function StudentsPage() {
-  const [students] = useState(initialStudents);
+  const { students, isLoading } = useGetAllStudents();
 
   return (
     <div className="p-6">
@@ -48,19 +36,65 @@ export default function StudentsPage() {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
+              <TableHead>Certificate ID</TableHead>
               <TableHead>Start Date</TableHead>
               <TableHead>Completion Date</TableHead>
+              <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {students.map((student) => (
-              <TableRow key={student.id}>
-                <TableCell>{student.name}</TableCell>
-                <TableCell>{student.startDate}</TableCell>
-                <TableCell>{student.completionDate}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+          {isLoading ? (
+            <TableBody>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[200px]" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[150px]" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[100px]" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[100px]" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[50px] ml-auto" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          ) : (
+            <TableBody>
+              {students.map((student) => (
+                <TableRow
+                  key={student.certificateId}
+                  onDoubleClick={() =>
+                    window.open(
+                      `${window.location.origin}/verify/${student.certificateId}`
+                    )
+                  }
+                  className="cursor-default"
+                >
+                  <TableCell>{student.name}</TableCell>
+                  <TableCell>{student.certificateId}</TableCell>
+                  <TableCell>{format(student.startDate, 'PPP')}</TableCell>
+                  <TableCell>{format(student.completionDate, 'PPP')}</TableCell>
+                  <TableCell className="flex justify-end">
+                    <CopyIcon
+                      className="cursor-pointer hover:text-green-500 size-4"
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          `${window.location.origin}/verify/${student.certificateId}`
+                        );
+                        toast.success('Link Copied Successfully!');
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
         </Table>
       </div>
     </div>

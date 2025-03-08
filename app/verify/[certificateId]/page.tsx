@@ -1,14 +1,9 @@
-import { getStudent } from '@/services/student.service';
+import { geAllStudents, getSingleStudent } from '@/services/student.service';
 import { Student } from '@/types';
 import { format } from 'date-fns';
 
 export async function generateStaticParams() {
-  const res = await fetch(`${process.env.BASE_URL}/api/v1/students`, {
-    next: { tags: ['students'] },
-  });
-  const { data: students } = await res.json();
-
-  console.log({ students });
+  const { data: students } = await geAllStudents();
 
   return students.map((student: Student) => ({
     certificateId: student.certificateId,
@@ -20,7 +15,7 @@ export default async function VerifyPage({
 }: {
   params: { certificateId: string };
 }) {
-  const { data: student } = await getStudent(params.certificateId);
+  const { data: student } = await getSingleStudent(params.certificateId);
 
   return (
     <div className="min-h-screen bg-background p-6">

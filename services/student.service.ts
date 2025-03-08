@@ -34,7 +34,7 @@ export const createStudent = async (
   return result;
 };
 
-export const getStudent = async (
+export const getSingleStudent = async (
   certificateId: string
 ): Promise<IResponse<Student>> => {
   'use server';
@@ -46,6 +46,20 @@ export const getStudent = async (
 
   if (!response.ok) {
     throw new Error('Certificate Verification Failed!');
+  }
+
+  return response.json();
+};
+
+export const geAllStudents = async (): Promise<IResponse<Student[]>> => {
+  'use server';
+
+  const response = await fetch(`${process.env.BASE_URL}/api/v1/students`, {
+    next: { tags: ['students'] },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch students!');
   }
 
   return response.json();
