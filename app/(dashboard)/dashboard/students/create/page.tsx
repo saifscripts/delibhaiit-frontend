@@ -10,8 +10,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useCreateStudent } from '@/hooks/student.hook';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -24,7 +24,7 @@ const formSchema = z.object({
 });
 
 export default function AddStudentPage() {
-  const router = useRouter();
+  const { mutate: createStudent, isPending } = useCreateStudent();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,8 +35,7 @@ export default function AddStudentPage() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    router.push('/dashboard/students');
+    createStudent(values);
   }
 
   return (
@@ -84,7 +83,9 @@ export default function AddStudentPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isPending}>
+              Submit
+            </Button>
           </form>
         </Form>
       </div>
