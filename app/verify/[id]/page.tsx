@@ -1,9 +1,16 @@
+export function generateStaticParams() {
+  // Generate static pages for example IDs
+  return [{ id: 'example-id' }, { id: '12345' }];
+}
+
 export default function VerifyPage() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-3xl mx-auto bg-card rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary">Certificate Verification</h1>
+          <h1 className="text-3xl font-bold text-primary">
+            Certificate Verification
+          </h1>
           <p className="text-muted-foreground mt-2">Certificate ID: #12345</p>
         </div>
 
@@ -36,8 +43,9 @@ export default function VerifyPage() {
               <div>
                 <h3 className="font-medium">Course Description</h3>
                 <p className="text-muted-foreground">
-                  Comprehensive training in modern web development technologies including
-                  HTML, CSS, JavaScript, React, Node.js, and database management.
+                  Comprehensive training in modern web development technologies
+                  including HTML, CSS, JavaScript, React, Node.js, and database
+                  management.
                 </p>
               </div>
               <div>
@@ -59,15 +67,15 @@ export default function VerifyPage() {
               <div>
                 <h3 className="font-medium">E-commerce Platform</h3>
                 <p className="text-muted-foreground">
-                  Built a full-stack e-commerce platform with product management,
-                  shopping cart, and payment integration.
+                  Built a full-stack e-commerce platform with product
+                  management, shopping cart, and payment integration.
                 </p>
               </div>
               <div>
                 <h3 className="font-medium">Social Media Dashboard</h3>
                 <p className="text-muted-foreground">
-                  Developed a responsive dashboard for social media analytics with
-                  real-time data visualization.
+                  Developed a responsive dashboard for social media analytics
+                  with real-time data visualization.
                 </p>
               </div>
             </div>
@@ -75,5 +83,5 @@ export default function VerifyPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
