@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table';
 import { useGetAllStudents } from '@/hooks/student.hook';
 import { format } from 'date-fns';
-import { CopyIcon, PlusCircle } from 'lucide-react';
+import { CopyIcon, EyeIcon, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
@@ -69,18 +69,21 @@ export default function StudentsPage() {
               {students.map((student) => (
                 <TableRow
                   key={student.certificateId}
-                  onDoubleClick={() =>
-                    window.open(
-                      `${window.location.origin}/verify/${student.certificateId}`
-                    )
-                  }
                   className="cursor-default"
                 >
                   <TableCell>{student.name}</TableCell>
                   <TableCell>{student.certificateId}</TableCell>
                   <TableCell>{format(student.startDate, 'PPP')}</TableCell>
                   <TableCell>{format(student.completionDate, 'PPP')}</TableCell>
-                  <TableCell className="flex justify-end">
+                  <TableCell className="flex justify-end items-center gap-3">
+                    <EyeIcon
+                      className="cursor-pointer hover:text-blue-500 size-5"
+                      onClick={() =>
+                        window.open(
+                          `${window.location.origin}/verify/${student.certificateId}`
+                        )
+                      }
+                    />
                     <CopyIcon
                       className="cursor-pointer hover:text-green-500 size-4"
                       onClick={() => {
