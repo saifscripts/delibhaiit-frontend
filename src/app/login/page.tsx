@@ -11,7 +11,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { login } from '@/services/auth.service';
+import { IResponse } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
@@ -25,6 +28,9 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,10 +40,18 @@ export default function LoginPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     try {
-      await login(values);
+      const data = (await login(values)) as IResponse<null>;
+      if (data.success) {
+        router.push('/dashboard');
+      } else {
+        toast.error(data?.message);
+      }
     } catch (error: unknown) {
       toast.error((error as { message: string }).message);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -79,7 +93,7 @@ export default function LoginPage() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={isLoading}>
             Login
           </Button>
         </form>
