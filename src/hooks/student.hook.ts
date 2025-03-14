@@ -1,4 +1,8 @@
-import { createStudent, geAllStudents } from '@/services/student.service';
+import {
+  createStudent,
+  geAllStudents,
+  getSingleStudent,
+} from '@/services/student.service';
 import { IResponse } from '@/types';
 import { ICreateStudentData, IStudent } from '@/types/student.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -36,4 +40,15 @@ export const useGetAllStudents = (searchParams: URLSearchParams) => {
     students: result?.data?.data || [],
     meta: result?.data?.meta,
   };
+};
+
+export const useGetStudent = (certificateId: string) => {
+  const result = useQuery({
+    queryKey: ['STUDENT', certificateId],
+    queryFn: () => getSingleStudent(certificateId),
+  });
+
+  const student = result?.data?.data;
+
+  return { ...result, student };
 };

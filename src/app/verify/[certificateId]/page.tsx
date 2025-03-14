@@ -1,21 +1,17 @@
-import { geAllStudents, getSingleStudent } from '@/services/student.service';
+'use client';
+
+import { useGetStudent } from '@/hooks/student.hook';
 import { format } from 'date-fns';
+import { useParams } from 'next/navigation';
+import Loading from './loading';
 
-export async function generateStaticParams() {
-  const { data: students } = await geAllStudents();
+export default function VerifyPage() {
+  const { certificateId } = useParams() as { certificateId: string };
+  const { student, isLoading } = useGetStudent(certificateId);
 
-  return students.map((student) => ({
-    certificateId: student.certificateId,
-  }));
-}
-
-export default async function VerifyPage({
-  params,
-}: {
-  params: Promise<{ certificateId: string }>;
-}) {
-  const { certificateId } = await params;
-  const { data: student } = await getSingleStudent(certificateId);
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -25,7 +21,7 @@ export default async function VerifyPage({
             Certificate Verification
           </h1>
           <p className="text-muted-foreground mt-2">
-            Certificate ID: #{student.certificateId}
+            Certificate ID: #{student?.certificateId}
           </p>
         </div>
 
@@ -35,7 +31,7 @@ export default async function VerifyPage({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-muted-foreground">Name</p>
-                <p className="font-medium">{student.name}</p>
+                <p className="font-medium">{student?.name}</p>
               </div>
               <div>
                 <p className="text-muted-foreground">Course</p>
@@ -43,15 +39,19 @@ export default async function VerifyPage({
               </div>
               <div>
                 <p className="text-muted-foreground">Start Date</p>
-                <p className="font-medium">
-                  {format(student.startDate, 'PPP')}
-                </p>
+                {student?.startDate && (
+                  <p className="font-medium">
+                    {format(student?.startDate, 'PPP')}
+                  </p>
+                )}
               </div>
               <div>
                 <p className="text-muted-foreground">Completion Date</p>
-                <p className="font-medium">
-                  {format(student.completionDate, 'PPP')}
-                </p>
+                {student?.completionDate && (
+                  <p className="font-medium">
+                    {format(student.completionDate, 'PPP')}
+                  </p>
+                )}
               </div>
             </div>
           </div>
