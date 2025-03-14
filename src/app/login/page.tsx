@@ -44,14 +44,14 @@ export default function LoginPage() {
     try {
       const data = (await login(values)) as IResponse<null>;
       if (data.success) {
-        router.push('/dashboard');
+        router.push('/dashboard/students');
       } else {
+        setIsLoading(false);
         toast.error(data?.message);
       }
     } catch (error: unknown) {
-      toast.error((error as { message: string }).message);
-    } finally {
       setIsLoading(false);
+      toast.error((error as { message: string }).message);
     }
   }
 

@@ -2,7 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Users } from 'lucide-react';
+import { logout } from '@/services/auth.service';
+import { LayoutDashboard, LogOutIcon, Users } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -24,7 +25,7 @@ export function Sidebar() {
 
   return (
     <div className="space-y-4 py-4 flex flex-col h-full bg-background border-r">
-      <div className="px-3 py-2 flex-1">
+      <div className="px-3 py-2 flex-1 flex flex-col justify-between">
         <div className="flex flex-col gap-1">
           {routes.map((route) => (
             <Link key={route.href} href={route.href}>
@@ -38,6 +39,14 @@ export function Sidebar() {
             </Link>
           ))}
         </div>
+        <Button
+          variant="ghost"
+          className="w-full justify-start"
+          onClick={() => logout()}
+        >
+          <LogOutIcon />
+          Log out
+        </Button>
       </div>
     </div>
   );
