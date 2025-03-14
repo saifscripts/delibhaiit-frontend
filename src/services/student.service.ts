@@ -50,12 +50,12 @@ export const getSingleStudent = async (
 };
 
 export const geAllStudents = async (
-  query: string
+  query: string = ''
 ): Promise<IResponse<IStudent[]>> => {
   'use server';
 
   const response = await fetch(
-    `${process.env.BASE_URL}/api/v1/students?${query}`,
+    `${process.env.BASE_URL}/api/v1/students${query ? `?${query}` : ''}`,
     {
       next: { tags: ['students'] },
     }
