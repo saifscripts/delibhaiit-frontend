@@ -49,12 +49,17 @@ export const getSingleStudent = async (
   return response.json();
 };
 
-export const geAllStudents = async (): Promise<IResponse<IStudent[]>> => {
+export const geAllStudents = async (
+  query: string
+): Promise<IResponse<IStudent[]>> => {
   'use server';
 
-  const response = await fetch(`${process.env.BASE_URL}/api/v1/students`, {
-    next: { tags: ['students'] },
-  });
+  const response = await fetch(
+    `${process.env.BASE_URL}/api/v1/students?${query}`,
+    {
+      next: { tags: ['students'] },
+    }
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch students!');

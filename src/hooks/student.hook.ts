@@ -21,11 +21,19 @@ export const useCreateStudent = () => {
   });
 };
 
-export const useGetAllStudents = () => {
+export const useGetAllStudents = (searchParams: URLSearchParams) => {
+  const query = new URLSearchParams(
+    Array.from(searchParams.entries())
+  ).toString();
+
   const result = useQuery({
-    queryKey: ['STUDENTS'],
-    queryFn: geAllStudents,
+    queryKey: ['STUDENTS', query],
+    queryFn: () => geAllStudents(query),
   });
 
-  return { ...result, students: result?.data?.data || [] };
+  return {
+    ...result,
+    students: result?.data?.data || [],
+    meta: result?.data?.meta,
+  };
 };
