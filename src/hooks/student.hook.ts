@@ -1,5 +1,6 @@
 import {
   createStudent,
+  deleteStudent,
   geAllStudents,
   getSingleStudent,
 } from '@/services/student.service';
@@ -7,6 +8,7 @@ import { IResponse } from '@/types';
 import { ICreateStudentData, IStudent } from '@/types/student.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 export const useCreateStudent = () => {
@@ -51,4 +53,22 @@ export const useGetStudent = (certificateId: string) => {
   const student = result?.data?.data;
 
   return { ...result, student };
+};
+
+export const useDeleteStudent = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  const result = useMutation({
+    mutationFn: (id: string) => deleteStudent(id),
+    onSuccess: (data: IResponse<null>) => {
+      if (data?.success) {
+        queryClient.invalidateQueries({ queryKey: ['STUDENTS'] });
+        setIsDialogOpen(false);
+        toast.success('Student Profile Deleted Successfully!');
+      }
+    },
+  });
+
+  return { ...result, isDialogOpen, setIsDialogOpen };
 };

@@ -1,4 +1,5 @@
 export interface IStudent {
+  _id: string;
   certificateId: string;
   name: string;
   startDate: string;

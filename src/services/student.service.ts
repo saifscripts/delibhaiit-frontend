@@ -67,3 +67,32 @@ export const geAllStudents = async (
 
   return response.json();
 };
+
+export const deleteStudent = async (id: string): Promise<IResponse<null>> => {
+  'use server';
+
+  const response = await fetch(
+    `${process.env.BASE_URL}/api/v1/students/${id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Student Deletion Failed!');
+  }
+
+  const result = await response.json();
+
+  if (result.success) {
+    revalidateTag('student');
+    revalidateTag('students');
+    revalidatePath(`/dashboard/verify/${result.data.certificateId}`);
+  }
+
+  return result;
+};

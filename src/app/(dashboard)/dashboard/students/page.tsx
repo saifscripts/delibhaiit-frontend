@@ -1,5 +1,6 @@
 'use client';
 
+import { ConfirmDeleteDialog } from '@/components/dashboard/students/confirm-delete-dialogue';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -131,6 +132,11 @@ export default function StudentsPage() {
                         );
                         toast.success('Link Copied Successfully!');
                       }}
+                    />
+                    <ConfirmDeleteDialog
+                      studentName={student.name}
+                      studentId={student._id}
+                      certificateId={student.certificateId}
                     />
                   </TableCell>
                 </TableRow>

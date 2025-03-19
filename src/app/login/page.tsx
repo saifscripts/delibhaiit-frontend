@@ -43,7 +43,6 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const data = (await login(values)) as IResponse<null>;
-      console.log({ data });
       if (data.success) {
         router.push('/dashboard/students');
       } else {
@@ -51,7 +50,6 @@ export default function LoginPage() {
         toast.error(data?.message);
       }
     } catch (error: unknown) {
-      console.log({ error });
       setIsLoading(false);
       toast.error((error as { message: string }).message);
     }
