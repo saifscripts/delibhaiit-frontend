@@ -66,7 +66,12 @@ export const useDeleteStudent = () => {
         queryClient.invalidateQueries({ queryKey: ['STUDENTS'] });
         setIsDialogOpen(false);
         toast.success('Student Profile Deleted Successfully!');
+      } else {
+        toast.error(data.message || 'Failed to delete student!');
       }
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to delete student!');
     },
   });
 

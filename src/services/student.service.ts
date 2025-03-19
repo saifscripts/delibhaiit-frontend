@@ -3,6 +3,7 @@
 import { IResponse } from '@/types';
 import { ICreateStudentData, IStudent } from '@/types/student.type';
 import { revalidatePath, revalidateTag } from 'next/cache';
+import { cookies } from 'next/headers';
 
 export const createStudent = async (
   data: ICreateStudentData
@@ -71,12 +72,16 @@ export const geAllStudents = async (
 export const deleteStudent = async (id: string): Promise<IResponse<null>> => {
   'use server';
 
+  const cookieStore = await cookies();
+  const auth_token = cookieStore.get('auth_token')?.value;
+
   const response = await fetch(
     `${process.env.BASE_URL}/api/v1/students/${id}`,
     {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        Cookie: `auth_token=${auth_token}`,
       },
       credentials: 'include',
     }
