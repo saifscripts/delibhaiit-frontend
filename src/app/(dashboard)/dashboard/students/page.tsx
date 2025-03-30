@@ -117,10 +117,7 @@ export default function StudentsPage() {
                   <TableCell>{format(student.startDate, 'PPP')}</TableCell>
                   <TableCell>{format(student.completionDate, 'PPP')}</TableCell>
                   <TableCell className="flex justify-end items-center gap-3">
-                    <DownloadQRCode
-                      studentName={student.name}
-                      certificateUrl={`${window.location.origin}/verify/${student.certificateId}`}
-                    />
+                    <DownloadQRCode student={student} />
                     <EyeIcon
                       className="cursor-pointer hover:text-blue-500 size-5"
                       onClick={() =>
