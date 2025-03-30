@@ -27,6 +27,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
   CopyIcon,
+  DownloadIcon,
   EyeIcon,
   PlusCircle,
 } from 'lucide-react';
@@ -57,6 +58,10 @@ export default function StudentsPage() {
     const query = search ? `?${search}` : '';
 
     router.push(`${pathname}${query}`);
+  };
+
+  const handleDownload = (url: string) => {
+    console.log(url);
   };
 
   return (
@@ -116,6 +121,14 @@ export default function StudentsPage() {
                   <TableCell>{format(student.startDate, 'PPP')}</TableCell>
                   <TableCell>{format(student.completionDate, 'PPP')}</TableCell>
                   <TableCell className="flex justify-end items-center gap-3">
+                    <DownloadIcon
+                      className="size-5 cursor-pointer hover:text-blue-800"
+                      onClick={() =>
+                        handleDownload(
+                          `${window.location.origin}/verify/${student.certificateId}`
+                        )
+                      }
+                    />
                     <EyeIcon
                       className="cursor-pointer hover:text-blue-500 size-5"
                       onClick={() =>
