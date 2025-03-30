@@ -31,10 +31,9 @@ export default function DownloadQRCode({ student }: { student: IStudent }) {
     <>
       <QRCodeCanvas
         value={`${window.location.origin}/verify/${student.certificateId}`}
-        size={200}
+        size={1000}
         ref={qrRef}
         className="hidden"
-        includeMargin
         marginSize={1}
         title={student.name}
       />
