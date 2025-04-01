@@ -1,6 +1,7 @@
+import { Button } from '@/components/ui/button';
 import { IStudent } from '@/types';
 import { format } from 'date-fns';
-import { DownloadIcon } from 'lucide-react';
+import { QrCodeIcon } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { useRef } from 'react';
 
@@ -37,10 +38,14 @@ export default function DownloadQRCode({ student }: { student: IStudent }) {
         marginSize={1}
         title={student.name}
       />
-      <DownloadIcon
-        className="size-5 cursor-pointer hover:text-blue-800"
-        onClick={() => handleDownload()}
-      />
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-8 w-8 hover:text-blue-500 hover:bg-blue-500/10"
+        onClick={handleDownload}
+      >
+        <QrCodeIcon className="size-4" />
+      </Button>
     </>
   );
 }

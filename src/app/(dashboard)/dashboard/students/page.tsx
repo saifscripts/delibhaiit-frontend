@@ -26,14 +26,13 @@ import {
   ChevronRightIcon,
   ChevronsLeftIcon,
   ChevronsRightIcon,
-  CopyIcon,
   EditIcon,
   EyeIcon,
   PlusCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import toast from 'react-hot-toast';
+import CopyButton from './_components/copy-button';
 import DownloadQRCode from './_components/download-qr-code';
 
 export default function StudentsPage() {
@@ -119,24 +118,24 @@ export default function StudentsPage() {
                   <TableCell>{format(student.completionDate, 'PPP')}</TableCell>
                   <TableCell className="flex justify-end items-center">
                     <DownloadQRCode student={student} />
-                    <EyeIcon
-                      className="cursor-pointer hover:text-blue-500 size-5"
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 hover:text-blue-500 hover:bg-blue-500/10"
                       onClick={() =>
                         window.open(
                           `${window.location.origin}/verify/${student.certificateId}`
                         )
                       }
+                    >
+                      <EyeIcon className="size-4" />
+                    </Button>
+                    <CopyButton
+                      link={`${window.location.origin}/verify/${student.certificateId}`}
                     />
-                    <CopyIcon
-                      className="cursor-pointer hover:text-green-500 size-4"
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          `${window.location.origin}/verify/${student.certificateId}`
-                        );
-                        toast.success('Link Copied Successfully!');
-                      }}
-                    />
-                    <Link href={`/dashboard/students/edit/${student.certificateId}`}>
+                    <Link
+                      href={`/dashboard/students/edit/${student.certificateId}`}
+                    >
                       <Button
                         variant="ghost"
                         size="icon"
