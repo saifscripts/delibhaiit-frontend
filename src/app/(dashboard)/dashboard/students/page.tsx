@@ -27,6 +27,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
   CopyIcon,
+  EditIcon,
   EyeIcon,
   PlusCircle,
 } from 'lucide-react';
@@ -116,7 +117,7 @@ export default function StudentsPage() {
                   <TableCell>{student.certificateId}</TableCell>
                   <TableCell>{format(student.startDate, 'PPP')}</TableCell>
                   <TableCell>{format(student.completionDate, 'PPP')}</TableCell>
-                  <TableCell className="flex justify-end items-center gap-3">
+                  <TableCell className="flex justify-end items-center">
                     <DownloadQRCode student={student} />
                     <EyeIcon
                       className="cursor-pointer hover:text-blue-500 size-5"
@@ -135,6 +136,15 @@ export default function StudentsPage() {
                         toast.success('Link Copied Successfully!');
                       }}
                     />
+                    <Link href={`/dashboard/students/edit/${student.certificateId}`}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-blue-400 hover:text-blue-500 hover:bg-blue-500/10"
+                      >
+                        <EditIcon className="size-4" />
+                      </Button>
+                    </Link>
                     <ConfirmDeleteDialog
                       studentName={student.name}
                       studentId={student._id}
