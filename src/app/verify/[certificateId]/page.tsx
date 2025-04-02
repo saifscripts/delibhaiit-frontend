@@ -9,7 +9,7 @@ const course = {
   name: 'Basic Computer, Internet and Advance Microsoft Office Management',
   description:
     'Fundamental training in computer operation, internet usage, and advanced skills in Microsoft Office applications including Word, Excel, and PowerPoint.',
-  skills_acquired: [
+  skills: [
     'Basic Computer Operation',
     'Internet and Email Management',
     'Microsoft Word (Advanced Document Formatting)',
@@ -96,7 +96,7 @@ export default function VerifyPage() {
               <div>
                 <h3 className="font-medium">Skills Acquired</h3>
                 <ul className="list-disc list-inside text-muted-foreground">
-                  {course?.skills_acquired?.map((skill) => (
+                  {course?.skills?.map((skill) => (
                     <li key={skill}>{skill}</li>
                   ))}
                 </ul>
