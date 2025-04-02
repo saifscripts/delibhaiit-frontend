@@ -10,8 +10,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useCreateStudent } from '@/hooks/student.hook';
+import { useCreateStudent, useGetStudent } from '@/hooks/student.hook';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { format, parseISO } from 'date-fns';
+import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -23,16 +26,38 @@ const formSchema = z.object({
   completionDate: z.string(),
 });
 
-export default function AddStudentPage() {
+export default function EditStudentPage() {
+  const { certificateId } = useParams() as { certificateId: string };
+  const { student, isLoading } = useGetStudent(certificateId);
+
   const { mutate: createStudent, isPending } = useCreateStudent();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      startDate: '',
-      completionDate: '',
+      name: student?.name || '',
+      startDate: student?.startDate
+        ? format(parseISO(student?.startDate), 'yyyy-MM-dd')
+        : '',
+      completionDate: student?.completionDate
+        ? format(parseISO(student?.completionDate), 'yyyy-MM-dd')
+        : '',
     },
   });
+
+  useEffect(() => {
+    console.log({ student });
+    form.reset({
+      name: student?.name,
+      startDate: student?.startDate
+        ? format(parseISO(student?.startDate), 'yyyy-MM-dd')
+        : '',
+      completionDate: student?.completionDate
+        ? format(parseISO(student?.completionDate), 'yyyy-MM-dd')
+        : '',
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [student]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     createStudent(values);
@@ -40,7 +65,7 @@ export default function AddStudentPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold">Create Student Profile</h1>
+      <h1 className="text-3xl font-bold">Edit Student Profile</h1>
       <div className="mt-8 max-w-[600px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -83,7 +108,7 @@ export default function AddStudentPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending || isLoading}>
               Submit
             </Button>
           </form>
