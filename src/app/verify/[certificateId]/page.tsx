@@ -8,7 +8,7 @@ import Loading from './loading';
 const course = {
   name: 'Basic Computer, Internet and Advance Microsoft Office Management',
   description:
-    'Fundamental training in computer operation, internet usage, and advanced skills in Microsoft Office applications including Word, Excel, PowerPoint, and Outlook.',
+    'Fundamental training in computer operation, internet usage, and advanced skills in Microsoft Office applications including Word, Excel, and PowerPoint.',
   skills_acquired: [
     'Basic Computer Operation',
     'Internet and Email Management',
