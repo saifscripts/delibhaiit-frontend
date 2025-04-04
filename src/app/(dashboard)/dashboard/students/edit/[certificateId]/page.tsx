@@ -46,7 +46,7 @@ export default function EditStudentPage() {
   });
 
   useEffect(() => {
-    if (student?.startDate) {
+    if (student) {
       form.reset({
         name: student?.name,
         startDate: student?.startDate
