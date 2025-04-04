@@ -46,16 +46,17 @@ export default function EditStudentPage() {
   });
 
   useEffect(() => {
-    console.log({ student });
-    form.reset({
-      name: student?.name,
-      startDate: student?.startDate
-        ? format(parseISO(student?.startDate), 'yyyy-MM-dd')
-        : '',
-      completionDate: student?.completionDate
-        ? format(parseISO(student?.completionDate), 'yyyy-MM-dd')
-        : '',
-    });
+    if (student?.startDate) {
+      form.reset({
+        name: student?.name,
+        startDate: student?.startDate
+          ? format(parseISO(student?.startDate), 'yyyy-MM-dd')
+          : '',
+        completionDate: student?.completionDate
+          ? format(parseISO(student?.completionDate), 'yyyy-MM-dd')
+          : '',
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [student]);
 
