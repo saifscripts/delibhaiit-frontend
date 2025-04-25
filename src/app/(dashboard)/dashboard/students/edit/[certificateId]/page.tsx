@@ -10,7 +10,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useCreateStudent, useGetStudent } from '@/hooks/student.hook';
+import { useGetStudent, useUpdateStudent } from '@/hooks/student.hook';
+import { IUpdateStudentData } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format, parseISO } from 'date-fns';
 import { useParams } from 'next/navigation';
@@ -19,18 +20,21 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: 'Name must be at least 2 characters.',
-  }),
-  startDate: z.string(),
-  completionDate: z.string(),
+  name: z
+    .string()
+    .min(2, {
+      message: 'Name must be at least 2 characters.',
+    })
+    .optional(),
+  startDate: z.string().optional(),
+  completionDate: z.string().optional(),
 });
 
 export default function EditStudentPage() {
   const { certificateId } = useParams() as { certificateId: string };
   const { student, isLoading } = useGetStudent(certificateId);
 
-  const { mutate: createStudent, isPending } = useCreateStudent();
+  const { mutate: updateStudent, isPending } = useUpdateStudent(certificateId);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,7 +65,10 @@ export default function EditStudentPage() {
   }, [student]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    createStudent(values);
+    updateStudent({
+      id: student?._id,
+      data: values,
+    } as IUpdateStudentData);
   }
 
   return (
@@ -110,7 +117,7 @@ export default function EditStudentPage() {
               )}
             />
             <Button type="submit" disabled={isPending || isLoading}>
-              Submit
+              Save Changes
             </Button>
           </form>
         </Form>

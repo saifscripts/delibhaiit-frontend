@@ -11,3 +11,12 @@ export interface ICreateStudentData {
   startDate: string;
   completionDate: string;
 }
+
+export interface IUpdateStudentData {
+  id: string;
+  data: {
+    name: string;
+    startDate: string;
+    completionDate: string;
+  };
+}

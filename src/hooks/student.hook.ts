@@ -3,9 +3,14 @@ import {
   deleteStudent,
   geAllStudents,
   getSingleStudent,
+  updateStudent,
 } from '@/services/student.service';
 import { IResponse } from '@/types';
-import { ICreateStudentData, IStudent } from '@/types/student.type';
+import {
+  ICreateStudentData,
+  IStudent,
+  IUpdateStudentData,
+} from '@/types/student.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -22,6 +27,22 @@ export const useCreateStudent = () => {
         router.push('/dashboard/students');
         queryClient.invalidateQueries({ queryKey: ['STUDENTS'] });
         toast.success('Student Profile Created Successfully!');
+      }
+    },
+  });
+};
+
+export const useUpdateStudent = (certificateId: string) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (options: IUpdateStudentData) => updateStudent(options),
+    onSuccess: (data: IResponse<IStudent>) => {
+      if (data?.success) {
+        router.push('/dashboard/students');
+        queryClient.invalidateQueries({ queryKey: ['STUDENT', certificateId] });
+        toast.success('Student Profile Updated Successfully!');
       }
     },
   });

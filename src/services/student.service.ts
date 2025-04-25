@@ -1,7 +1,11 @@
 'use server';
 
 import { IResponse } from '@/types';
-import { ICreateStudentData, IStudent } from '@/types/student.type';
+import {
+  ICreateStudentData,
+  IStudent,
+  IUpdateStudentData,
+} from '@/types/student.type';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
@@ -23,6 +27,43 @@ export const createStudent = async (
   }
 
   const result = await response.json();
+
+  if (result.success) {
+    revalidateTag('student');
+    revalidateTag('students');
+    revalidatePath(`/dashboard/verify/${result.data.certificateId}`);
+  }
+
+  return result;
+};
+
+export const updateStudent = async (
+  options: IUpdateStudentData
+): Promise<IResponse<IStudent>> => {
+  'use server';
+
+  const cookieStore = await cookies();
+  const auth_token = cookieStore.get('auth_token')?.value;
+
+  const response = await fetch(
+    `${process.env.BASE_URL}/api/v1/students/${options.id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: `auth_token=${auth_token}`,
+      },
+      body: JSON.stringify(options.data),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Student Update Failed!');
+  }
+
+  const result = await response.json();
+
+  console.log({ result });
 
   if (result.success) {
     revalidateTag('student');

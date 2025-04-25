@@ -84,7 +84,7 @@ export default function AddStudentPage() {
               )}
             />
             <Button type="submit" disabled={isPending}>
-              Submit
+              Create
             </Button>
           </form>
         </Form>
