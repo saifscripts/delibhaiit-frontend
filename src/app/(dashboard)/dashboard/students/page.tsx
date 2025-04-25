@@ -2,6 +2,7 @@
 
 import { ConfirmDeleteDialog } from '@/components/dashboard/students/confirm-delete-dialogue';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -19,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useDebouncedState } from '@/hooks/debounce.hook';
 import { useGetAllStudents } from '@/hooks/student.hook';
 import { format } from 'date-fns';
 import {
@@ -29,9 +31,11 @@ import {
   EditIcon,
   EyeIcon,
   PlusCircle,
+  SearchIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import CopyButton from './_components/copy-button';
 import DownloadQRCode from './_components/download-qr-code';
 
@@ -39,10 +43,12 @@ export default function StudentsPage() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [query, debouncedQuery, setQuery] = useDebouncedState('', 400);
   const { students, meta, isFetching } = useGetAllStudents(searchParams);
 
   const currentPage = Number(searchParams.get('page')) || 1;
   const limit = Number(searchParams.get('limit')) || 10;
+  //   const searchTerm = searchParams.get('searchTerm') || '';
   const totalPages = meta?.totalPages || 0;
 
   const setSearchParams = (key: string, value: string) => {
@@ -60,6 +66,11 @@ export default function StudentsPage() {
     router.replace(`${pathname}${query}`);
   };
 
+  useEffect(() => {
+    setSearchParams('searchTerm', debouncedQuery);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedQuery]);
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between">
@@ -70,6 +81,18 @@ export default function StudentsPage() {
             New Student
           </Button>
         </Link>
+      </div>
+
+      <div className="mt-8">
+        <div className="relative max-w-md">
+          <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Name, Certificate ID"
+            className="w-full pr-8"
+          />
+          <SearchIcon className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground size-5" />
+        </div>
       </div>
 
       <div className="mt-8">
