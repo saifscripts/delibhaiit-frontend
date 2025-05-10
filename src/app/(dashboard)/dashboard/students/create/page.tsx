@@ -1,5 +1,6 @@
 'use client';
 
+import FormImageUploader from '@/components/form/FormImageUploader';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -21,6 +22,7 @@ const formSchema = z.object({
   }),
   startDate: z.string(),
   completionDate: z.string(),
+  photo: z.instanceof(File),
 });
 
 export default function AddStudentPage() {
@@ -44,6 +46,13 @@ export default function AddStudentPage() {
       <div className="mt-8 max-w-[600px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormImageUploader
+              name="photo"
+              label="Photo"
+              width={150}
+              height={180}
+              imageSize="150x180"
+            />
             <FormField
               control={form.control}
               name="name"

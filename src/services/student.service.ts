@@ -17,7 +17,7 @@ export const createStudent = async (
   const response = await fetch(`${process.env.BASE_URL}/api/v1/students/`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
     body: JSON.stringify(data),
   });

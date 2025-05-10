@@ -29,6 +29,9 @@ export const useCreateStudent = () => {
         toast.success('Student Profile Created Successfully!');
       }
     },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to create student!');
+    },
   });
 };
 
