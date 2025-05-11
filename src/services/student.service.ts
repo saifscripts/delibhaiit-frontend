@@ -1,5 +1,6 @@
 'use server';
 
+import { objectToFormData } from '@/lib/objectToFormData';
 import { IResponse } from '@/types';
 import {
   ICreateStudentData,
@@ -16,10 +17,7 @@ export const createStudent = async (
 
   const response = await fetch(`${process.env.BASE_URL}/api/v1/students/`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    body: JSON.stringify(data),
+    body: objectToFormData(data),
   });
 
   if (!response.ok) {
@@ -27,6 +25,8 @@ export const createStudent = async (
   }
 
   const result = await response.json();
+
+  console.log({ result });
 
   if (result.success) {
     revalidateTag('student');
