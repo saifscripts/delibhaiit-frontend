@@ -32,7 +32,9 @@ import {
   EyeIcon,
   PlusCircle,
   SearchIcon,
+  User,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -99,7 +101,7 @@ export default function StudentsPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
+              <TableHead>Profile</TableHead>
               <TableHead>Certificate ID</TableHead>
               <TableHead>Start Date</TableHead>
               <TableHead>Completion Date</TableHead>
@@ -111,7 +113,10 @@ export default function StudentsPage() {
               {Array.from({ length: 10 }).map((_, index) => (
                 <TableRow key={index}>
                   <TableCell>
-                    <Skeleton className="h-4 w-[200px]" />
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-8 w-8 rounded-full" />
+                      <Skeleton className="h-4 w-[150px]" />
+                    </div>
                   </TableCell>
                   <TableCell>
                     <Skeleton className="h-4 w-[150px]" />
@@ -135,7 +140,26 @@ export default function StudentsPage() {
                   key={student.certificateId}
                   className="cursor-default"
                 >
-                  <TableCell>{student.name}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <div className="h-8 w-8 rounded-full overflow-hidden">
+                        {student.photo ? (
+                          <Image
+                            src={student.photo}
+                            alt={student.name}
+                            width={32}
+                            height={32}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div className="h-full w-full bg-muted flex items-center justify-center">
+                            <User className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                        )}
+                      </div>
+                      <span>{student.name}</span>
+                    </div>
+                  </TableCell>
                   <TableCell>{student.certificateId}</TableCell>
                   <TableCell>{format(student.startDate, 'PPP')}</TableCell>
                   <TableCell>{format(student.completionDate, 'PPP')}</TableCell>
