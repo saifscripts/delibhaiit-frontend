@@ -4,12 +4,15 @@ export interface IStudent {
   name: string;
   startDate: string;
   completionDate: string;
+  photo: string;
+  createdAt: string;
 }
 
 export interface ICreateStudentData {
   name: string;
   startDate: string;
   completionDate: string;
+  photo: File;
 }
 
 export interface IUpdateStudentData {
