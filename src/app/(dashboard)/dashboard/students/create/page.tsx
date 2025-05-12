@@ -17,12 +17,12 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const formSchema = z.object({
-  name: z.string().min(2, {
+  name: z.string().min(1, { message: 'Name is required' }).min(2, {
     message: 'Name must be at least 2 characters.',
   }),
   startDate: z.string(),
   completionDate: z.string(),
-  photo: z.instanceof(File),
+  photo: z.instanceof(File, { message: 'Photo is required' }),
 });
 
 export default function AddStudentPage() {
