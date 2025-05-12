@@ -59,6 +59,7 @@ export const useGetAllStudents = (searchParams: URLSearchParams) => {
   const result = useQuery({
     queryKey: ['STUDENTS', query],
     queryFn: () => geAllStudents(query),
+    refetchOnWindowFocus: false,
   });
 
   return {

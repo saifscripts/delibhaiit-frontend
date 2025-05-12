@@ -46,7 +46,8 @@ export default function StudentsPage() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [query, debouncedQuery, setQuery] = useDebouncedState('', 400);
-  const { students, meta, isFetching } = useGetAllStudents(searchParams);
+  const { students, meta, isLoading, isRefetching } =
+    useGetAllStudents(searchParams);
 
   const currentPage = Number(searchParams.get('page')) || 1;
   const limit = Number(searchParams.get('limit')) || 10;
@@ -108,7 +109,7 @@ export default function StudentsPage() {
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
-          {isFetching ? (
+          {isLoading || isRefetching ? (
             <TableBody>
               {Array.from({ length: 10 }).map((_, index) => (
                 <TableRow key={index}>
