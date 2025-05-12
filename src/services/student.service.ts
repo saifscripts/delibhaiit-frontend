@@ -15,8 +15,15 @@ export const createStudent = async (
 ): Promise<IResponse<IStudent>> => {
   'use server';
 
+  const cookieStore = await cookies();
+  const auth_token = cookieStore.get('auth_token')?.value;
+
   const response = await fetch(`${process.env.BASE_URL}/api/v1/students/`, {
     method: 'POST',
+    headers: {
+      // 'Content-Type': 'multipart/form-data',
+      Cookie: `auth_token=${auth_token}`,
+    },
     body: objectToFormData(data),
   });
 
