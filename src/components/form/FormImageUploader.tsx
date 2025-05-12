@@ -7,7 +7,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Input } from '../ui/input';
 
@@ -28,6 +28,14 @@ export default function FormImageUploader({
 }: IFormImageUploaderProps) {
   const form = useFormContext();
   const [preview, setPreview] = useState<string | null>(null);
+
+  const value = form.watch(name);
+
+  useEffect(() => {
+    if (value) {
+      setPreview(value);
+    }
+  }, [value]);
 
   return (
     <FormField

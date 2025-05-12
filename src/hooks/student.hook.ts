@@ -36,14 +36,14 @@ export const useCreateStudent = () => {
 };
 
 export const useUpdateStudent = (certificateId: string) => {
-  const router = useRouter();
+  //   const router = useRouter();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (options: IUpdateStudentData) => updateStudent(options),
     onSuccess: (data: IResponse<IStudent>) => {
       if (data?.success) {
-        router.push('/dashboard/students');
+        // router.push('/dashboard/students');
         queryClient.invalidateQueries({ queryKey: ['STUDENT', certificateId] });
         toast.success('Student Profile Updated Successfully!');
       }

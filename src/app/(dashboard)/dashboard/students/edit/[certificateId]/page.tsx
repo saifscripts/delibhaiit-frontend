@@ -1,5 +1,6 @@
 'use client';
 
+import FormImageUploader from '@/components/form/FormImageUploader';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -26,6 +27,7 @@ const formSchema = z.object({
       message: 'Name must be at least 2 characters.',
     })
     .optional(),
+  photo: z.any().optional(),
   startDate: z.string().optional(),
   completionDate: z.string().optional(),
 });
@@ -40,6 +42,7 @@ export default function EditStudentPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: student?.name || '',
+      photo: student?.photo || '',
       startDate: student?.startDate
         ? format(parseISO(student?.startDate), 'yyyy-MM-dd')
         : '',
@@ -53,6 +56,7 @@ export default function EditStudentPage() {
     if (student) {
       form.reset({
         name: student?.name,
+        photo: student?.photo,
         startDate: student?.startDate
           ? format(parseISO(student?.startDate), 'yyyy-MM-dd')
           : '',
@@ -77,6 +81,13 @@ export default function EditStudentPage() {
       <div className="mt-8 max-w-[600px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormImageUploader
+              name="photo"
+              label="Photo"
+              width={150}
+              height={180}
+              imageSize="150x180"
+            />
             <FormField
               control={form.control}
               name="name"

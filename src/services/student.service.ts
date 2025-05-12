@@ -50,10 +50,10 @@ export const updateStudent = async (
     {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'multipart/form-data',
         Cookie: `auth_token=${auth_token}`,
       },
-      body: JSON.stringify(options.data),
+      body: objectToFormData(options.data),
     }
   );
 
