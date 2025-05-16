@@ -20,6 +20,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { useDebouncedState } from '@/hooks/debounce.hook';
 import { useGetAllStudents } from '@/hooks/student.hook';
 import { format } from 'date-fns';
@@ -207,43 +213,82 @@ export default function StudentsPage() {
 
       <div className="flex items-center justify-between gap-2 mt-8">
         <div className="flex items-center justify-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSearchParams('page', '1')}
-            disabled={currentPage === 1}
-          >
-            <ChevronsLeftIcon />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSearchParams('page', String(currentPage - 1))}
-            disabled={currentPage === 1}
-          >
-            <ChevronLeftIcon />
-          </Button>
-          <span className="flex items-center gap-2">
-            <span className="hidden sm:inline">Page </span>
-            <span className="">{currentPage}</span>{' '}
-            <span>of {meta?.totalPages}</span>
-          </span>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSearchParams('page', String(currentPage + 1))}
-            disabled={currentPage >= totalPages}
-          >
-            <ChevronRightIcon />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSearchParams('page', String(totalPages))}
-            disabled={currentPage === totalPages}
-          >
-            <ChevronsRightIcon />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setSearchParams('page', '1')}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronsLeftIcon />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>First page</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() =>
+                    setSearchParams('page', String(currentPage - 1))
+                  }
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeftIcon />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Previous page</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <span className="flex items-center gap-2">
+              <span className="hidden sm:inline">Page </span>
+              <span className="">{currentPage}</span>{' '}
+              <span>of {meta?.totalPages}</span>
+            </span>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() =>
+                    setSearchParams('page', String(currentPage + 1))
+                  }
+                  disabled={currentPage >= totalPages}
+                >
+                  <ChevronRightIcon />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Next page</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setSearchParams('page', String(totalPages))}
+                  disabled={currentPage === totalPages}
+                >
+                  <ChevronsRightIcon />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Last page</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
           <Select
             value={String(limit)}
             onValueChange={(value) => {
